@@ -52,11 +52,8 @@ class DeadlineController extends Controller
         ]);
     }
 
-    public function addAction()
+    public function addAction(Request $objRequest)
     {
-        /** @var Request $objRequest */
-        $objRequest = $this->get('request');
-
         $strDescription = $objRequest->request->get('description');
         $strDeadlineText = $objRequest->request->get('deadline');
 
@@ -75,7 +72,7 @@ class DeadlineController extends Controller
         $objEM->persist($objDeadline);
         $objEM->flush();
 
-        return $this->redirectToReferrer();
+        return $this->redirectToReferrer($objRequest);
     }
 
     public function showEditorAction($numID)
@@ -100,7 +97,7 @@ class DeadlineController extends Controller
         ]);
     }
 
-    public function editAction($numID)
+    public function editAction(Request $objRequest, $numID)
     {
         /** @var \Doctrine\ORM\EntityManager $objEM */
         $objEM = $this->getDoctrine()->getManager();
@@ -110,9 +107,6 @@ class DeadlineController extends Controller
         {
             return static::makePlainTextResponse("Deadline with ID $numID not found.", 404);
         }
-
-        /** @var Request $objRequest */
-        $objRequest = $this->get('request');
 
         $strDescription = $objRequest->request->get('description');
         $strDeadlineText = $objRequest->request->get('deadline');
@@ -142,7 +136,7 @@ class DeadlineController extends Controller
         }
     }
 
-    public function completeAction($numID)
+    public function completeAction(Request $objRequest, $numID)
     {
         /** @var \Doctrine\ORM\EntityManager $objEM */
         $objEM = $this->getDoctrine()->getManager();
@@ -156,14 +150,11 @@ class DeadlineController extends Controller
         $objDeadline->blnComplete = true;
         $objEM->flush();
 
-        return $this->redirectToReferrer();
+        return $this->redirectToReferrer($objRequest);
     }
 
-    protected function redirectToReferrer()
+    protected function redirectToReferrer(Request $objRequest)
     {
-        /** @var Request $objRequest */
-        $objRequest = $this->get('request');
-
         // 303 = temporary redirect, switch to GET
         $strReferrer = $objRequest->headers->get('Referer');
         return $this->redirect($strReferrer, 303);
