@@ -2,7 +2,7 @@ list_deadlines:
   path: /
   methods: [GET]
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:list
+    _controller: RavuAlHemioTotstrichBundle:Deadline:list
     intPage: 0
     blnCompletedAlso: false
 
@@ -12,14 +12,14 @@ list_deadlines_page:
   requirements:
     intPage: '\d+'
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:list
+    _controller: RavuAlHemioTotstrichBundle:Deadline:list
     blnCompletedAlso: false
 
 list_all_deadlines:
   path: /all
   methods: [GET]
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:list
+    _controller: RavuAlHemioTotstrichBundle:Deadline:list
     intPage: 0
     blnCompletedAlso: true
 
@@ -29,14 +29,14 @@ list_deadlines_page:
   requirements:
     intPage: '\d+'
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:list
+    _controller: RavuAlHemioTotstrichBundle:Deadline:list
     blnCompletedAlso: true
 
 add_deadline:
   path: /add
   methods: [POST]
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:add
+    _controller: RavuAlHemioTotstrichBundle:Deadline:add
 
 show_deadline_editor:
   path: /edit/{numID}
@@ -44,7 +44,7 @@ show_deadline_editor:
   requirements:
     numID: '\d+'
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:showEditor
+    _controller: RavuAlHemioTotstrichBundle:Deadline:showEditor
 
 edit_deadline:
   path: /edit/{numID}
@@ -52,7 +52,7 @@ edit_deadline:
   requirements:
     numID: '\d+'
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:edit
+    _controller: RavuAlHemioTotstrichBundle:Deadline:edit
 
 complete_deadline:
   path: /complete/{numID}
@@ -60,4 +60,4 @@ complete_deadline:
   requirements:
     numID: '\d+'
   defaults:
-    _controller: RavuAlHemioTotstrich:Deadline:complete
+    _controller: RavuAlHemioTotstrichBundle:Deadline:complete
