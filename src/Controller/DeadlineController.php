@@ -15,7 +15,7 @@ class DeadlineController extends Controller
     {
         if ($intPerPage <= 0)
         {
-            $intPerPage = (int) $this->container->get('totstrich.deadlines_per_page');
+            $intPerPage = (int) $this->container->getParameter('totstrich.deadlines_per_page');
         }
 
         /** @var \Doctrine\ORM\EntityManager $objEM */
@@ -89,7 +89,7 @@ class DeadlineController extends Controller
             return static::makePlainTextResponse("Deadline with ID $numID not found.", 404);
         }
 
-        $strDateFormat = $this->container->get('totstrich.date_format');
+        $strDateFormat = $this->container->getParameter('totstrich.date_format');
         $strReferrer = $this->get('request')->headers->get('Referer');
 
         return $this->render('@RavuAlHemioTotstrich/editdeadline.html.twig', [
