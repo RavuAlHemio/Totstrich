@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 
 /**
- * @ORM\Model
+ * @ORM\Entity
  * @ORM\Table(name="deadlines")
  */
 class Deadline
