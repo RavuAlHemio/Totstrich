@@ -37,7 +37,7 @@ class DeadlineController extends Controller
         }
         else
         {
-            $strQuery = str_replace('{{FILTER}}', 'WHERE NOT d.blnComplete', $strQuery);
+            $strQuery = str_replace('{{FILTER}}', 'WHERE d.blnComplete = FALSE', $strQuery);
         }
 
         $objQuery = $objEM->createQuery($strQuery);
