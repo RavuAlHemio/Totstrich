@@ -16,7 +16,7 @@
                 <td><button class="add">&#10133;</button></td>
             </tr>
             {% for deadline in deadlines %}
-                <tr class="deadline {% if deadline.isComplete %}complete{% elif deadline.isOverdue %}overdue{% else %}pending{% endif %}">
+                <tr class="deadline {% if deadline.isComplete %}complete{% elseif deadline.isOverdue %}overdue{% else %}pending{% endif %}">
                     <td>{{ deadline.description | escape }}</td>
                     <td>{{ deadline.deadline | escape }}</td>
                     <td>
