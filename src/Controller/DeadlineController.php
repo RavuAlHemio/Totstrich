@@ -47,8 +47,23 @@ class DeadlineController extends Controller
         /** @var Deadline[] $arrDeadlines */
         $arrDeadlines = $objQuery->getResult();
 
+        $dtmNow = new \DateTime('now');
+        $strDateFormat = $this->container->getParameter('totstrich.date_format');
+
+        $arrDeadlinesForTemplate = [];
+        foreach ($arrDeadlines as $objDeadline)
+        {
+            $arrDeadlinesForTemplate[] = [
+                'id' => $objDeadline->numID,
+                'description' => $objDeadline->strDescription,
+                'deadline' => $objDeadline->dtmDeadline->format($strDateFormat),
+                'isComplete' => $objDeadline->blnComplete,
+                'isOverdue' => ($objDeadline->dtmDeadline < $dtmNow)
+            ];
+        }
+
         return $this->render('@RavuAlHemioTotstrich/deadlines.html.twig', [
-            'deadlines' => $arrDeadlines
+            'deadlines' => $arrDeadlinesForTemplate
         ]);
     }
 
@@ -92,6 +107,7 @@ class DeadlineController extends Controller
         return $this->render('@RavuAlHemioTotstrich/editdeadline.html.twig', [
             'id' => $objDeadline->numID,
             'deadline' => $objDeadline->dtmDeadline->format($strDateFormat),
+            'description' => $objDeadline->strDescription,
             'isComplete' => $objDeadline->blnComplete,
             'referrer' => $strReferrer
         ]);

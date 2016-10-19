@@ -16,9 +16,9 @@
                 <td><button class="add">&#10133;</button></td>
             </tr>
             {% for deadline in deadlines %}
-                <tr class="deadline">
-                    <td>{{ deadline.strDescription | escape }}</td>
-                    <td>{{ deadline.dtmDeadline | escape }}</td>
+                <tr class="deadline {% if deadline.isComplete %}complete{% elif deadline.isOverdue %}overdue{% else %}pending{% endif %}">
+                    <td>{{ deadline.description | escape }}</td>
+                    <td>{{ deadline.deadline | escape }}</td>
                     <td>
                         <a href="{{ path('show_deadline_editor', {'numID': deadline.numID}) }}">&#128393;</a>
                         <form action="{{ path('complete_deadline', {'numID': deadline.numID}) }}" method="post"><button class="complete">&#10004;</button></form>
