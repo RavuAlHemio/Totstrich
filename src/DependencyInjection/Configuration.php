@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(32)
                 ->end()
                 ->scalarNode('date_format')
-                    ->defaultValue('Y-m-d H:i:s')
+                    ->defaultValue('Y-m-d H:i')
                 ->end()
             ->end()
         ;
