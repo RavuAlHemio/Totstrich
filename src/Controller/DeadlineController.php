@@ -90,7 +90,7 @@ class DeadlineController extends Controller
         return $this->redirectToReferrer($objRequest);
     }
 
-    public function showEditorAction($numID)
+    public function showEditorAction(Request $objRequest, $numID)
     {
         /** @var \Doctrine\ORM\EntityManager $objEM */
         $objEM = $this->getDoctrine()->getManager();
@@ -102,7 +102,7 @@ class DeadlineController extends Controller
         }
 
         $strDateFormat = $this->container->getParameter('totstrich.date_format');
-        $strReferrer = $this->get('request')->headers->get('Referer');
+        $strReferrer = $objRequest->headers->get('Referer');
 
         return $this->render('@RavuAlHemioTotstrich/editdeadline.html.twig', [
             'id' => $objDeadline->numID,
