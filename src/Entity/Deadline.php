@@ -33,7 +33,7 @@ class Deadline
 
     /**
      * @var boolean
-     * @ORM\Column(name="complete", nullable=false)
+     * @ORM\Column(name="complete", type="boolean", nullable=false)
      */
     public $blnComplete;
 }
