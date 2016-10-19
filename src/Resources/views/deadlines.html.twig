@@ -20,8 +20,8 @@
                     <td>{{ deadline.description | escape }}</td>
                     <td>{{ deadline.deadline | escape }}</td>
                     <td>
-                        <a href="{{ path('show_deadline_editor', {'numID': deadline.numID}) }}">&#128393;</a>
-                        <form action="{{ path('complete_deadline', {'numID': deadline.numID}) }}" method="post"><button class="complete">&#10004;</button></form>
+                        <a href="{{ path('show_deadline_editor', {'numID': deadline.id}) }}">&#128393;</a>
+                        <form action="{{ path('complete_deadline', {'numID': deadline.id}) }}" method="post"><button class="complete">&#10004;</button></form>
                     </td>
                 </tr>
             {% endfor %}
