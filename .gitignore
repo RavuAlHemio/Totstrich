@@ -1,0 +1,8 @@
+# IntelliJ
+*.ipr
+*.iws
+*.iml
+
+# Composer
+composer.lock
+vendor/

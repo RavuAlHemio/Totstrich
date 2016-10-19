@@ -1,0 +1,24 @@
+{% extends "@RavuAlHemioTotstrich/base.html.twig" %}
+
+{% block title %}Deadlines{% endblock %}
+
+{% block body %}
+    <form action="{{ path('edit_deadline', {'numID': id}) }}" method="post">
+        <div class="form-field">
+            <label for="edit-deadline-description">Description</label>
+            <input id="edit-deadline-description" type="text" name="description" value="{{ description | escape }}" />
+        </div>
+        <div class="form-field">
+            <label for="edit-deadline-deadline">Deadline</label>
+            <input id="edit-deadline-deadline" type="text" name="deadline" value="{{ deadline | escape }}" />
+        </div>
+        <div class="form-field">
+            <input id="edit-deadline-complete" type="checkbox" name="complete" value="1" {% if isComplete %}checked="checked" {% endif %}/>
+            <label for="edit-deadline-complete">Complete</label>
+        </div>
+        <div class="form-field">
+            <button type="submit">Save</button>
+        </div>
+        <input type="hidden" name="previous-referrer" value="{{ referrer | escape }}" />
+    </form>
+{% endblock %}

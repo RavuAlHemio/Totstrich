@@ -1,0 +1,30 @@
+{% extends "@RavuAlHemioTotstrich/base.html.twig" %}
+
+{% block title %}Deadlines{% endblock %}
+
+{% block body %}
+    <form action="{{ path('add_deadline') }}" method="post">
+        <table class="deadlines">
+            <tr class="invisible-header-row">
+                <th>Description</th>
+                <th>Deadline</th>
+                <th>Actions</th>
+            </tr>
+            <tr class="insertion-row">
+                <td><input type="text" name="description" title="Description" placeholder="EProg Übung 3" /></td>
+                <td><input type="text" name="deadline" title="Deadline" placeholder="10.4. 10:40" /></td>
+                <td><button class="add">&#10133;</button></td>
+            </tr>
+            {% for deadline in deadlines %}
+                <tr class="deadline">
+                    <td>{{ deadline.strDescription | escape }}</td>
+                    <td>{{ deadline.dtmDeadline | escape }}</td>
+                    <td>
+                        <a href="{{ path('show_deadline_editor', {'numID': deadline.numID}) }}">&#128393;</a>
+                        <form action="{{ path('complete_deadline', {'numID': deadline.numID}) }}" method="post"><button class="complete">&#10004;</button></form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+{% endblock %}

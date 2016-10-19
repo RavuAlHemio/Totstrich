@@ -1,0 +1,63 @@
+list_deadlines:
+  path: /
+  methods: [GET]
+  defaults:
+    _controller: RavuAlHemioTotstrich:Deadline:list
+    intPage: 0
+    blnCompletedAlso: false
+
+list_deadlines_page:
+  path: /{intPage}
+  methods: [GET]
+  requirements:
+    intPage: '\d+'
+  defaults:
+    _controller: RavuAlHemioTotstrich:Deadline:list
+    blnCompletedAlso: false
+
+list_all_deadlines:
+  path: /all
+  methods: [GET]
+  defaults:
+    _controller: RavuAlHemioTotstrich:Deadline:list
+    intPage: 0
+    blnCompletedAlso: true
+
+list_deadlines_page:
+  path: /{intPage}
+  methods: [GET]
+  requirements:
+    intPage: '\d+'
+  defaults:
+    _controller: RavuAlHemioTotstrich:Deadline:list
+    blnCompletedAlso: true
+
+add_deadline:
+  path: /add
+  methods: [POST]
+  default:
+    _controller: RavuAlHemioTotstrich:Deadline:add
+
+show_deadline_editor:
+  path: /edit/{numID}
+  methods: [GET]
+  requirements:
+    numID: '\d+'
+  defaults:
+    _controller: RavuAlHemioTotstrich:Deadline:showEditor
+
+edit_deadline:
+  path: /edit/{numID}
+  methods: [POST]
+  requirements:
+    numID: '\d+'
+  defaults:
+    _controller: RavuAlHemioTotstrich:Deadline:edit
+
+complete_deadline:
+  path: /complete/{numID}
+  methods: [POST]
+  requirements:
+    numID: '\d+'
+  defaults:
+    _controller: RavuAlHemioTotstrich:Deadline:complete
