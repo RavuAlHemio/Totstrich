@@ -11,12 +11,25 @@ class DateTimeUtils
      */
     public static function tryParseFutureDateTime($strDateTime)
     {
+        $intCurrentYear = (int) date('Y');
+        $dtmNow = new \DateTime('now');
+        return static::actuallyTryParseFutureDateTime($strDateTime, $intCurrentYear, $dtmNow);
+    }
+
+    /**
+     * @param string $strDateTime
+     * @param int $intCurrentYear
+     * @param \DateTime $dtmNow
+     * @return \DateTime|null
+     */
+    protected static function actuallyTryParseFutureDateTime($strDateTime, $intCurrentYear, $dtmNow)
+    {
         $arrFormats = [
             // "10.4. 10:40", "10. 04. 1990 10:40"
             '\\s*(?P<day>[0-9]{1,2})\\.\\s*(?P<month>[0-9]{1,2})\\.(?:\\s*(?P<year>[0-9]+))?\\s+(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})\\s*',
 
             // "4/10 10:40", "4/10/90 10:40", "4/10/1990 10:40"
-            '\\s*(?P<month>[0-9]{1,2})\\/(?P<day>[0-9]{1,2})\\/(?P<year>[0-9]+)?\\s+(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})\\s*',
+            '\\s*(?P<month>[0-9]{1,2})\\/(?P<day>[0-9]{1,2})(?:\\/(?P<year>[0-9]+))?\\s+(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})\\s*',
 
             // "1990-10-04 10:40"
             '\\s*(?P<year>[0-9]+)-(?P<month>[0-9]{1,2})-(?P<day>[0-9]{1,2})?\\s+(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})\\s*',
@@ -24,7 +37,7 @@ class DateTimeUtils
 
         foreach ($arrFormats as $strPattern)
         {
-            if (preg_match("/{$strPattern}/", $strDateTime, $arrMatches) !== 1)
+            if (preg_match("/^{$strPattern}$/", $strDateTime, $arrMatches) !== 1)
             {
                 continue;
             }
@@ -45,24 +58,21 @@ class DateTimeUtils
             $intYear = null;
             $blnPotentiallyAdjustCentury = false;
             $blnPotentiallyAdjustYear = false;
-            if (array_key_exists('year', $arrMatches))
+            if (array_key_exists('year', $arrMatches) && $arrMatches['year'] !== '')
             {
                 // there is a year!
                 $intYear = (int) $arrMatches['year'];
                 if (strlen($arrMatches['year']) == 2)
                 {
                     // assume the year has been written in shorthand
-
-                    $intCurrentYear = (int) date('Y');
-                    $intYear += ($intCurrentYear % 100);
-
+                    $intYear += $intCurrentYear - ($intCurrentYear % 100);
                     $blnPotentiallyAdjustCentury = true;
                 }
             }
             else
             {
                 // no year; go with the current one
-                $intYear = (int) date('Y');
+                $intYear = $intCurrentYear;
                 $blnPotentiallyAdjustYear = true;
             }
 
@@ -86,7 +96,6 @@ class DateTimeUtils
                 continue;
             }
 
-            $dtmNow = new \DateTime('now');
             if ($dtmDateTime < $dtmNow)
             {
                 // try adjustments
@@ -96,7 +105,7 @@ class DateTimeUtils
                     if ($dtmCenturyDateTime < $dtmNow)
                     {
                         // both are behind, assume the user knew what they were doing
-                        return $dtmNow;
+                        return $dtmDateTime;
                     }
                     else
                     {
@@ -109,7 +118,7 @@ class DateTimeUtils
                     if ($dtmYearDateTime < $dtmNow)
                     {
                         // both are behind, assume the user knew what they were doing
-                        return $dtmNow;
+                        return $dtmDateTime;
                     }
                     else
                     {
