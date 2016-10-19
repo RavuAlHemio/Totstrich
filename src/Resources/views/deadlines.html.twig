@@ -21,10 +21,13 @@
                     <td>{{ deadline.deadline | escape }}</td>
                     <td>
                         <a href="{{ path('show_deadline_editor', {'numID': deadline.id}) }}">&#128393;</a>
-                        <form action="{{ path('complete_deadline', {'numID': deadline.id}) }}" method="post"><button class="complete">&#10004;</button></form>
+                        <button class="complete" type="submit" form="deadline-{{ deadline.id }}-completion-form">&#10004;</button>
                     </td>
                 </tr>
             {% endfor %}
         </table>
     </form>
+    {% for deadline in deadlines %}
+        <form id="deadline-{{ deadline.id }}-completion-form" action="{{ path('complete_deadline', {'numID': deadline.id}) }}" method="post"></form>
+    {% endfor %}
 {% endblock %}
