@@ -30,7 +30,8 @@ class DeadlineController extends Controller
                 RavuAlHemioTotstrichBundle:Deadline d
             {{FILTER}}
             ORDER BY
-                d.dtmDeadline ASC
+                d.dtmDeadline ASC,
+                d.numID ASC
         ';
 
         if ($blnCompletedAlso)
