@@ -5,30 +5,24 @@
 {% block body %}
     <form action="{{ path('add_deadline') }}" method="post">
         <table class="deadlines">
-            <colgroup>
-                <col class="description" />
-                <col class="deadline" />
-                <col class="interval" />
-                <col class="actions" />
-            </colgroup>
             <tr class="invisible-header-row">
-                <th>Description</th>
-                <th>Deadline</th>
-                <th>Interval</th>
-                <th>Actions</th>
+                <th class="description">Description</th>
+                <th class="deadline">Deadline</th>
+                <th class="interval">Interval</th>
+                <th class="actions">Actions</th>
             </tr>
             <tr class="insertion-row">
-                <td><input type="text" name="description" title="Description" placeholder="EProg Übung 3" /></td>
-                <td><input type="text" name="deadline" title="Deadline" placeholder="10.4. 10:40" /></td>
-                <td></td>
-                <td><button class="add">+</button></td>
+                <td class="description"><input type="text" name="description" title="Description" placeholder="EProg Übung 3" /></td>
+                <td class="deadline"><input type="text" name="deadline" title="Deadline" placeholder="10.4. 10:40" /></td>
+                <td class="interval"></td>
+                <td class="actions"><button class="add">+</button></td>
             </tr>
             {% for deadline in deadlines %}
                 <tr class="deadline {% if deadline.isComplete %}complete{% elseif deadline.isOverdue %}overdue{% else %}pending{% endif %}">
-                    <td>{{ deadline.description | escape }}</td>
-                    <td>{{ deadline.deadline | escape }}</td>
-                    <td>{{ deadline.interval | escape }}</td>
-                    <td>
+                    <td class="description">{{ deadline.description | escape }}</td>
+                    <td class="deadline">{{ deadline.deadline | escape }}</td>
+                    <td class="interval">{{ deadline.interval | escape }}</td>
+                    <td class="actions">
                         <a class="edit" href="{{ path('show_deadline_editor', {'numID': deadline.id}) }}">&#128393;</a>
                         <button class="complete" type="submit" form="deadline-{{ deadline.id }}-completion-form">&#10004;</button>
                     </td>
