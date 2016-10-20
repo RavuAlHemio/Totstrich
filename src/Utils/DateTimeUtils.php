@@ -17,6 +17,95 @@ class DateTimeUtils
     }
 
     /**
+     * @param \DateInterval $dinInterval
+     * @return string
+     */
+    public static function intervalToEnglish($dinInterval)
+    {
+        if ($dinInterval->days === null)
+        {
+            throw new \InvalidArgumentException('interval does not have a valid days value');
+        }
+
+        $intWeeks = floor($dinInterval->days / 7);
+        $intDays = $dinInterval->days % 7;
+        $intHours = $dinInterval->h;
+        $intMinutes = $dinInterval->m;
+        $intSeconds = $dinInterval->s;
+
+        $arrPieces = [];
+
+        if ($intWeeks == 1)
+        {
+            $arrPieces[] = '1 week';
+        }
+        else if ($intWeeks > 0)
+        {
+            $arrPieces[] = "{$intWeeks} weeks";
+        }
+
+        if ($intDays == 1)
+        {
+            $arrPieces[] = '1 day';
+        }
+        else if ($intDays > 0)
+        {
+            $arrPieces[] = "{$intDays} days";
+        }
+
+        if ($intHours == 1)
+        {
+            $arrPieces[] = '1 hour';
+        }
+        else
+        {
+            $arrPieces[] = "{$intHours} hours";
+        }
+
+        if ($intMinutes == 1)
+        {
+            $arrPieces[] = '1 minute';
+        }
+        else
+        {
+            $arrPieces[] = "{$intMinutes} minutes";
+        }
+
+        if (count($arrPieces) == 0)
+        {
+            // nothing until now
+            if ($intSeconds == 0)
+            {
+                return 'now';
+            }
+            else
+            {
+                $arrPieces[] = "{$intSeconds} seconds";
+            }
+        }
+
+        $strFinalString = null;
+        if (count($arrPieces) == 1)
+        {
+            $strFinalString = $arrPieces[0];
+        }
+        else
+        {
+            $arrInitialPieces = array_slice($arrPieces, 0, count($arrPieces) - 1);
+            $strFinalString = implode(', ', $arrInitialPieces) . ' and ' . $arrPieces[count($arrPieces) - 1];
+        }
+
+        if ($dinInterval->invert)
+        {
+            return $strFinalString . ' ago';
+        }
+        else
+        {
+            return 'in ' . $strFinalString;
+        }
+    }
+
+    /**
      * @param string $strDateTime
      * @param int $intCurrentYear
      * @param \DateTime $dtmNow
