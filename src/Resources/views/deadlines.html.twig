@@ -5,6 +5,12 @@
 {% block body %}
     <form action="{{ path('add_deadline') }}" method="post">
         <table class="deadlines">
+            <colgroup>
+                <col class="description" />
+                <col class="deadline" />
+                <col class="interval" />
+                <col class="actions" />
+            </colgroup>
             <tr class="invisible-header-row">
                 <th>Description</th>
                 <th>Deadline</th>
