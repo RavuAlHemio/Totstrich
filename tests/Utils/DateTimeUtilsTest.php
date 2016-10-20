@@ -113,6 +113,10 @@ class DateTimeUtilsTest extends \PHPUnit_Framework_TestCase
         {
             $this->assertTryParseFutureDateTimeEqual('2114-12-24 20:01:00', $strChristmas);
         }
+
+        // test time-only inputs (today and tomorrow)
+        $this->assertTryParseFutureDateTimeEqual('2016-10-19 23:59:00', '23:59');
+        $this->assertTryParseFutureDateTimeEqual('2016-10-20 13:37:00', '13:37');
     }
 
     public function testIntervalToEnglish()

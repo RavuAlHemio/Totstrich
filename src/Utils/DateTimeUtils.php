@@ -122,6 +122,9 @@ class DateTimeUtils
     protected static function actuallyTryParseFutureDateTime($strDateTime, $intCurrentYear, $dtmNow)
     {
         $arrFormats = [
+            // "10:40"
+            '\\s*(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})\\s*',
+
             // "10.4. 10:40", "10. 04. 1990 10:40"
             '\\s*(?P<day>[0-9]{1,2})\\.\\s*(?P<month>[0-9]{1,2})\\.(?:\\s*(?P<year>[0-9]+))?\\s+(?P<hour>[0-9]{1,2}):(?P<minute>[0-9]{1,2})\\s*',
 
@@ -140,37 +143,50 @@ class DateTimeUtils
             }
 
             // yay
-            $intDay = (int) $arrMatches['day'];
-            if ($intDay < 1 || $intDay > 31)
-            {
-                continue;
-            }
 
-            $intMonth = (int) $arrMatches['month'];
-            if ($intMonth < 1 || $intMonth > 12)
-            {
-                continue;
-            }
-
-            $intYear = null;
+            $intDay = null;
             $blnPotentiallyAdjustCentury = false;
             $blnPotentiallyAdjustYear = false;
-            if (array_key_exists('year', $arrMatches) && $arrMatches['year'] !== '')
+            $blnPotentiallyAdjustDay = false;
+            if (array_key_exists('day', $arrMatches))
             {
-                // there is a year!
-                $intYear = (int) $arrMatches['year'];
-                if (strlen($arrMatches['year']) == 2)
+                $intDay = (int) $arrMatches['day'];
+                if ($intDay < 1 || $intDay > 31)
                 {
-                    // assume the year has been written in shorthand
-                    $intYear += $intCurrentYear - ($intCurrentYear % 100);
-                    $blnPotentiallyAdjustCentury = true;
+                    continue;
+                }
+
+                $intMonth = (int) $arrMatches['month'];
+                if ($intMonth < 1 || $intMonth > 12)
+                {
+                    continue;
+                }
+
+                $intYear = null;
+                if (array_key_exists('year', $arrMatches) && $arrMatches['year'] !== '')
+                {
+                    // there is a year!
+                    $intYear = (int) $arrMatches['year'];
+                    if (strlen($arrMatches['year']) == 2)
+                    {
+                        // assume the year has been written in shorthand
+                        $intYear += $intCurrentYear - ($intCurrentYear % 100);
+                        $blnPotentiallyAdjustCentury = true;
+                    }
+                }
+                else
+                {
+                    // no year; go with the current one
+                    $intYear = $intCurrentYear;
+                    $blnPotentiallyAdjustYear = true;
                 }
             }
             else
             {
-                // no year; go with the current one
-                $intYear = $intCurrentYear;
-                $blnPotentiallyAdjustYear = true;
+                $intYear = (int) $dtmNow->format('Y');
+                $intMonth = (int) $dtmNow->format('m');
+                $intDay = (int) $dtmNow->format('d');
+                $blnPotentiallyAdjustDay = true;
             }
 
             $intHour = (int) $arrMatches['hour'];
@@ -220,6 +236,32 @@ class DateTimeUtils
                     else
                     {
                         return $dtmYearDateTime;
+                    }
+                }
+                else if ($blnPotentiallyAdjustDay)
+                {
+                    $dtmDayLaterDateTime = clone $dtmDateTime;
+                    $dtmDayLaterDateTime->add(new \DateInterval('P1D'));
+
+                    // if there is a DST or timezone change in between, the hours and minutes don't match up anymore
+                    // take the new date but the old time
+                    $dtmDayDateTime = static::buildDateTime(
+                        (int) $dtmDayLaterDateTime->format('Y'),
+                        (int) $dtmDayLaterDateTime->format('m'),
+                        (int) $dtmDayLaterDateTime->format('d'),
+                        (int) $dtmDateTime->format('H'),
+                        (int) $dtmDateTime->format('i'),
+                        (int) $dtmDateTime->format('s')
+                    );
+
+                    if ($dtmDayDateTime < $dtmNow)
+                    {
+                        // both are behind, assume the user knew what they were doing
+                        return $dtmDateTime;
+                    }
+                    else
+                    {
+                        return $dtmDayDateTime;
                     }
                 }
             }
