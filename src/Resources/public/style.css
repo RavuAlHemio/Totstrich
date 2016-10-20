@@ -101,6 +101,11 @@ section.page-selector span.current-page
     padding: 0.5em;
 }
 
+section.page-selector span.current-page
+{
+    font-weight: bold;
+}
+
 @media (max-width: 768px)
 {
     table.deadlines,
