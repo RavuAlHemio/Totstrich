@@ -32,6 +32,17 @@ class DateTimeUtilsTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    protected function assertIntervalToEnglishEquals($strExpected, $strIntervalSpec)
+    {
+        $dinInterval = new \DateInterval($strIntervalSpec);
+        $dtmNow = new \DateTime('now');
+        $dtmThen = clone $dtmNow;
+        $dtmThen->add($dinInterval);
+        $dinActualInterval = $dtmNow->diff($dtmThen);
+
+        $this->assertEquals($strExpected, DateTimeUtils::intervalToEnglish($dinActualInterval));
+    }
+
     public function testTryParseFutureDateTime()
     {
         $this->assertTryParseFutureDateTimeEqual(null, '');
@@ -102,5 +113,31 @@ class DateTimeUtilsTest extends \PHPUnit_Framework_TestCase
         {
             $this->assertTryParseFutureDateTimeEqual('2114-12-24 20:01:00', $strChristmas);
         }
+    }
+
+    public function testIntervalToEnglish()
+    {
+        $this->assertIntervalToEnglishEquals('in 2 weeks', 'P14D');
+        $this->assertIntervalToEnglishEquals('in 1 week', 'P7D');
+        $this->assertIntervalToEnglishEquals('in 6 days', 'P6D');
+        $this->assertIntervalToEnglishEquals('in 1 day', 'PT24H');
+        $this->assertIntervalToEnglishEquals('in 14 hours', 'PT14H');
+        $this->assertIntervalToEnglishEquals('in 1 hour', 'PT60M');
+        $this->assertIntervalToEnglishEquals('in 33 minutes', 'PT33M');
+        $this->assertIntervalToEnglishEquals('in 1 minute', 'PT60S');
+        $this->assertIntervalToEnglishEquals('in 2 seconds', 'PT2S');
+        $this->assertIntervalToEnglishEquals('in 1 second', 'PT1S');
+        $this->assertIntervalToEnglishEquals('now', 'P0D');
+
+        $this->assertIntervalToEnglishEquals('in 2 weeks and 6 days', 'P20D');
+        $this->assertIntervalToEnglishEquals('in 1 week and 1 day', 'P8D');
+        $this->assertIntervalToEnglishEquals('in 2 weeks, 6 days and 14 hours', 'P20DT14H');
+        $this->assertIntervalToEnglishEquals('in 2 weeks, 6 days, 14 hours and 33 minutes', 'P20DT14H33M');
+        $this->assertIntervalToEnglishEquals('in 1 week, 1 day, 1 hour and 1 minute', 'P8DT1H1M');
+        $this->assertIntervalToEnglishEquals('in 1 week, 2 hours and 1 minute', 'P7DT2H1M');
+
+        // don't bother with seconds if there are larger units
+        $this->assertIntervalToEnglishEquals('in 2 weeks, 6 days, 14 hours and 33 minutes', 'P20DT14H33M2S');
+        $this->assertIntervalToEnglishEquals('in 1 week, 1 day, 1 hour and 1 minute', 'P8DT1H1M1S');
     }
 }

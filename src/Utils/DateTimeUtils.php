@@ -22,7 +22,11 @@ class DateTimeUtils
      */
     public static function intervalToEnglish($dinInterval)
     {
-        if ($dinInterval->days === null)
+        if ($dinInterval === null)
+        {
+            throw new \InvalidArgumentException('interval is null');
+        }
+        if ($dinInterval->days === false)
         {
             throw new \InvalidArgumentException('interval does not have a valid days value');
         }
@@ -30,7 +34,7 @@ class DateTimeUtils
         $intWeeks = floor($dinInterval->days / 7);
         $intDays = $dinInterval->days % 7;
         $intHours = $dinInterval->h;
-        $intMinutes = $dinInterval->m;
+        $intMinutes = $dinInterval->i;
         $intSeconds = $dinInterval->s;
 
         $arrPieces = [];
@@ -57,7 +61,7 @@ class DateTimeUtils
         {
             $arrPieces[] = '1 hour';
         }
-        else
+        else if ($intHours > 0)
         {
             $arrPieces[] = "{$intHours} hours";
         }
@@ -66,7 +70,7 @@ class DateTimeUtils
         {
             $arrPieces[] = '1 minute';
         }
-        else
+        else if ($intMinutes > 0)
         {
             $arrPieces[] = "{$intMinutes} minutes";
         }
@@ -77,6 +81,10 @@ class DateTimeUtils
             if ($intSeconds == 0)
             {
                 return 'now';
+            }
+            else if ($intSeconds == 1)
+            {
+                $arrPieces[] = '1 second';
             }
             else
             {
