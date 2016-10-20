@@ -23,7 +23,7 @@
                     <td>{{ deadline.deadline | escape }}</td>
                     <td>{{ deadline.interval | escape }}</td>
                     <td>
-                        <a href="{{ path('show_deadline_editor', {'numID': deadline.id}) }}">&#128393;</a>
+                        <a class="edit" href="{{ path('show_deadline_editor', {'numID': deadline.id}) }}">&#128393;</a>
                         <button class="complete" type="submit" form="deadline-{{ deadline.id }}-completion-form">&#10004;</button>
                     </td>
                 </tr>
