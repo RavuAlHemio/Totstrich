@@ -1,11 +1,25 @@
 body
 {
     font-family: "Helvetica", "Arial", sans-serif;
+    margin: 0;
 }
 
-tr.invisible-header-row
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
 {
-    visibility: hidden;
+    padding-left: 0.2em;
+}
+
+@media not aural, not braille
+{
+    tr.invisible-header-row
+    {
+        display: none;
+    }
 }
 
 tr.deadline.complete
@@ -23,18 +37,38 @@ tr.insertion-row input
     width: 100%;
 }
 
+table.deadlines
+{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.deadlines tr:nth-child(odd)
+{
+    background-color: #eee;
+}
+
 table.deadlines td
 {
     vertical-align: top;
-    padding-right: 1em;
+    padding: 0.4em 0.5em;
 }
 
-button.add, button.complete, a.edit
+button.add,
+button.complete,
+a.edit
 {
+    display: inline-block;
+
+    border: none;
     border-radius: 1em;
+
     width: 2em;
     height: 2em;
-    border: none;
+    line-height: 2em;
+
+    font-size: 120%;
+    text-align: center;
     text-decoration: none;
 }
 
@@ -54,4 +88,39 @@ a.edit
 {
     background-color: #ff0;
     color: #000;
+}
+
+@media (max-width: 768px)
+{
+    table.deadlines,
+    table.deadlines tr,
+    table.deadlines td
+    {
+        display: block;
+    }
+
+    table.deadlines td
+    {
+        width: calc(100% - 1em);
+    }
+
+    table.deadlines td.actions
+    {
+        text-align: center;
+    }
+}
+
+@media (min-width: 768px)
+{
+    tr.deadline td.deadline,
+    tr.deadline td.interval,
+    tr.deadline td.actions
+    {
+        white-space: nowrap;
+    }
+    
+    table.deadlines td.actions
+    {
+        text-align: right;
+    }
 }
