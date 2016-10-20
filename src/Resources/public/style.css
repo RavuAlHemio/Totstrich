@@ -111,6 +111,11 @@ form.edit-deadline
     margin-left: 0.5em;
 }
 
+div.form-field
+{
+    margin-bottom: 0.5em;
+}
+
 @media (max-width: 768px)
 {
     table.deadlines,
@@ -162,6 +167,7 @@ form.edit-deadline
 
     form.edit-deadline div.form-field label
     {
+        display: inline-block;
         width: 6em;
     }
 
