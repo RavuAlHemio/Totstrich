@@ -36,13 +36,13 @@
 
     <section class="page-selector">
         {% if completedVisible %}
-            {% if page = 0 %}
+            {% if page == 0 %}
                 <a class="filter-link" href="{{ path('list_deadlines') }}">&#9200;</a>
             {% else %}
                 <a class="filter-link" href="{{ path('list_deadlines_page', {'intPage': page}) }}">&#9200;</a>
             {% endif %}
         {% else %}
-            {% if page = 0 %}
+            {% if page == 0 %}
                 <a class="filter-link" href="{{ path('list_all_deadlines') }}">&#10033;</a>
             {% else %}
                 <a class="filter-link" href="{{ path('list_all_deadlines_page', {'intPage': page}) }}">&#10033;</a>
@@ -50,7 +50,7 @@
         {% endif %}
 
         {% for linkPage in 1..pageCount %}
-            {% if linkPage - 1 = page %}
+            {% if linkPage - 1 == page %}
                 <span class="current-page">{{ linkPage }}</span>
             {% elseif completedVisible %}
                 <a class="page-link" href="{{ path('list_all_deadlines_page', {'intPage': linkPage - 1}) }}">{{ linkPage }}</a>
