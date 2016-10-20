@@ -23,8 +23,8 @@ list_all_deadlines:
     intPage: 0
     blnCompletedAlso: true
 
-list_deadlines_page:
-  path: /{intPage}
+list_all_deadlines_page:
+  path: /all/{intPage}
   methods: [GET]
   requirements:
     intPage: '\d+'
