@@ -7,7 +7,7 @@ list_deadlines:
     blnCompletedAlso: false
 
 list_deadlines_page:
-  path: /{intPage}
+  path: /page/{intPage}
   methods: [GET]
   requirements:
     intPage: '\d+'
@@ -24,7 +24,7 @@ list_all_deadlines:
     blnCompletedAlso: true
 
 list_all_deadlines_page:
-  path: /all/{intPage}
+  path: /all/page/{intPage}
   methods: [GET]
   requirements:
     intPage: '\d+'
