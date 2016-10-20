@@ -7,7 +7,7 @@
         <table class="deadlines">
             <tr class="invisible-header-row">
                 <th>Description</th>
-                <th>Deadline</th>
+                <th colspan="2">Deadline</th>
                 <th>Actions</th>
             </tr>
             <tr class="insertion-row">
@@ -19,6 +19,7 @@
                 <tr class="deadline {% if deadline.isComplete %}complete{% elseif deadline.isOverdue %}overdue{% else %}pending{% endif %}">
                     <td>{{ deadline.description | escape }}</td>
                     <td>{{ deadline.deadline | escape }}</td>
+                    <td>{{ deadline.interval | escape }}</td>
                     <td>
                         <a href="{{ path('show_deadline_editor', {'numID': deadline.id}) }}">&#128393;</a>
                         <button class="complete" type="submit" form="deadline-{{ deadline.id }}-completion-form">&#10004;</button>

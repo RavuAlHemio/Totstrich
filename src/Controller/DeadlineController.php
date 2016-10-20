@@ -57,6 +57,7 @@ class DeadlineController extends Controller
                 'id' => $objDeadline->numID,
                 'description' => $objDeadline->strDescription,
                 'deadline' => $objDeadline->dtmDeadline->format($strDateFormat),
+                'interval' => DateTimeUtils::intervalToEnglish($dtmNow->diff($objDeadline->dtmDeadline)),
                 'isComplete' => $objDeadline->blnComplete,
                 'isOverdue' => ($objDeadline->dtmDeadline < $dtmNow)
             ];
