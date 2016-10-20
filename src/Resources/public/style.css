@@ -135,6 +135,11 @@ form.edit-deadline
         display: block;
     }
 
+    form.edit-deadline div.form-field label.same-line
+    {
+        display: inline;
+    }
+
     form.edit-deadline input[type=text]
     {
         width: calc(100% - 1em);
