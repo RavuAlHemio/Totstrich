@@ -3,7 +3,7 @@
 {% block title %}Deadlines{% endblock %}
 
 {% block body %}
-    <form action="{{ path('edit_deadline', {'numID': id}) }}" method="post">
+    <form class="edit-deadline" action="{{ path('edit_deadline', {'numID': id}) }}" method="post">
         <div class="form-field">
             <label for="edit-deadline-description">Description</label>
             <input id="edit-deadline-description" type="text" name="description" value="{{ description | escape }}" />
