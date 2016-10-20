@@ -21,6 +21,8 @@ class DeadlineController extends Controller
         /** @var \Doctrine\ORM\EntityManager $objEM */
         $objEM = $this->getDoctrine()->getManager();
 
+        $strCountQuery = 'SELECT COUNT(d) FROM RavuAlHemioTotstrichBundle:Deadline d {{FILTER}}';
+
         $strQuery = '
             SELECT
                 d
@@ -33,12 +35,18 @@ class DeadlineController extends Controller
 
         if ($blnCompletedAlso)
         {
+            $strCountQuery = str_replace('{{FILTER}}', '', $strCountQuery);
             $strQuery = str_replace('{{FILTER}}', '', $strQuery);
         }
         else
         {
+            $strCountQuery = str_replace('{{FILTER}}', 'WHERE d.blnComplete = FALSE', $strCountQuery);
             $strQuery = str_replace('{{FILTER}}', 'WHERE d.blnComplete = FALSE', $strQuery);
         }
+
+        $objCountQuery = $objEM->createQuery($strCountQuery);
+        $intCount = $objCountQuery->getSingleScalarResult();
+        $intPageCount = ceil($intCount / $intPerPage);
 
         $objQuery = $objEM->createQuery($strQuery);
         $objQuery->setFirstResult($intPage * $intPerPage);
@@ -64,7 +72,10 @@ class DeadlineController extends Controller
         }
 
         return $this->render('@RavuAlHemioTotstrich/deadlines.html.twig', [
-            'deadlines' => $arrDeadlinesForTemplate
+            'deadlines' => $arrDeadlinesForTemplate,
+            'page' => $intPage,
+            'pageCount' => $intPageCount,
+            'completedVisible' => $blnCompletedAlso
         ]);
     }
 
@@ -199,13 +210,6 @@ class DeadlineController extends Controller
         ');
         $objQuery->setParameter('id', $numID);
 
-        /** @var Deadline[] $arrDeadlines */
-        $arrDeadlines = $objQuery->getResult();
-        if (count($arrDeadlines) == 0)
-        {
-            return null;
-        }
-
-        return $arrDeadlines[0];
+        return $objQuery->getOneOrNullResult();
     }
 }
