@@ -26,6 +26,7 @@ tr.insertion-row input
 table.deadlines td
 {
     vertical-align: top;
+    padding-right: 1em;
 }
 
 button.add, button.complete, a.edit
