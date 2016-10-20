@@ -1,0 +1,56 @@
+body
+{
+    font-family: "Helvetica", "Arial", sans-serif;
+}
+
+tr.invisible-header-row
+{
+    visibility: hidden;
+}
+
+tr.deadline.complete
+{
+    color: #999;
+}
+
+tr.deadline.overdue
+{
+    color: #f00;
+}
+
+tr.insertion-row input
+{
+    width: 100%;
+}
+
+table.deadlines td
+{
+    vertical-align: top;
+}
+
+button.add, button.complete, a.edit
+{
+    border-radius: 1em;
+    width: 2em;
+    height: 2em;
+    border: none;
+    text-decoration: none;
+}
+
+button.add
+{
+    background-color: #090;
+    color: #fff;
+}
+
+button.complete
+{
+    background-color: #090;
+    color: #fff;
+}
+
+a.edit
+{
+    background-color: #ff0;
+    color: #000;
+}
